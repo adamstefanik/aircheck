@@ -31,8 +31,11 @@ final class OutdoorService {
     }
 
     private func fetchAQI() async -> Int? {
+        let key = city.lowercased().trimmingCharacters(in: .whitespaces)
+        let waqiCity = key == "malenovice" ? "zlin" : city
+
         guard !aqicnToken.isEmpty, !city.isEmpty,
-              let url = URL(string: "https://api.waqi.info/feed/\(city)/?token=\(aqicnToken)") else {
+              let url = URL(string: "https://api.waqi.info/feed/\(waqiCity)/?token=\(aqicnToken)") else {
             return nil
         }
         guard let (data, _) = try? await URLSession.shared.data(from: url),
